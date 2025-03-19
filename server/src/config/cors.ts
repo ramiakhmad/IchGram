@@ -9,7 +9,7 @@ export const configureCors = (): CorsOptions => {
     }
 
     return {
-        origin: [clientHost ,"http://localhost:5173" ], // Используем массив, чтобы избежать ошибки
+        origin: ["https://ichgram.onrender.com",clientHost ,"http://localhost:5173" ], // Используем массив, чтобы избежать ошибки
         methods: ["GET", "POST", "DELETE", "PUT"],
         allowedHeaders: ["Content-Type", "Authorization"],
         exposedHeaders: ["Set-Cookie"],
