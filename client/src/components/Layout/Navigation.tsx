@@ -12,6 +12,7 @@ import { SearchModal } from "../SearchModal/SearchModal.tsx";
 import { useFetchUserAfterReload } from "../../utils/customHooks.ts";
 import axios from "axios";
 import { logout } from "../../store/slices/userSlice"; 
+import { FiLogOut } from "react-icons/fi";
 
 export const Navigation = () => {
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -142,9 +143,9 @@ export const Navigation = () => {
                     </Link>
                     <button
                         onClick={handleLogout}
-                        className="mx-auto lgg:mx-0 mt-4 bg-red-500 text-black px-4 py-2 rounded-md"
+                        className="mx-auto lgg:mx-0 mt-4 bg-red-500 text-black px-4 py-2 rounded-md flex items-center gap-2"
                     >
-                        Logout
+                        <FiLogOut className="w-4 h-4" />
                     </button>
                 </div>
             </div>
