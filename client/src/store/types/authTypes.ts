@@ -17,3 +17,5 @@ export type RegisterDataType = {
 export type ResetDataType = {
     usernameOrEmail: string,
 }
+
+export type LogoutDataType = Record<string, never>; // Explicitly define an empty object type

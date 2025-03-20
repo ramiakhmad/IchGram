@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {authStateType} from '../types/authTypes.ts';
-import {registerUser, resetPassword, userLogin} from "../actionCreators/authActionCreators.ts";
+import {registerUser, resetPassword, userLogin, logoutUser} from "../actionCreators/authActionCreators.ts";
 
 const initialState:authStateType = {
     status: 'IDLE',
@@ -40,7 +40,7 @@ const authSlice = createSlice({
             state.status = 'FAILED';
             console.log(action);
             state.error = action.error.message || "Reset failed";
-        })
+        }).addCase(logoutUser.fulfilled, () => initialState); // Reset state on logout
     }
 })
 

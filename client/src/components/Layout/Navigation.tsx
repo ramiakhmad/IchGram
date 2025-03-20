@@ -1,15 +1,17 @@
-import {useState} from "react";
-import {Link, useLocation} from "react-router";
-import {useSelector} from "react-redux";
-import {RootState} from "../../store/store.ts";
+import { useState } from "react";
+import { Link, useLocation } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/store.ts";
 import links from "./navLinks.ts";
 import logo from "../../assets/logo.svg";
-import ich from "../../assets/nav_icons/ich.png"
+import ich from "../../assets/nav_icons/ich.png";
 import default_profile_pic from "../../assets/default_profile_pic.png";
-import {CreatePost} from "../CreatePost/CreatePost.tsx";
-import {NotificationsModal} from "../NotificationsModal/NotificationsModal.tsx";
-import {SearchModal} from "../SearchModal/SearchModal.tsx";
-import {useFetchUserAfterReload} from "../../utils/customHooks.ts";
+import { CreatePost } from "../CreatePost/CreatePost.tsx";
+import { NotificationsModal } from "../NotificationsModal/NotificationsModal.tsx";
+import { SearchModal } from "../SearchModal/SearchModal.tsx";
+import { useFetchUserAfterReload } from "../../utils/customHooks.ts";
+import axios from "axios";
+import { logout } from "../../store/slices/userSlice"; 
 
 export const Navigation = () => {
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
@@ -18,8 +20,19 @@ export const Navigation = () => {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
     const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false);
     const location = useLocation();
+    const dispatch = useDispatch();
     useFetchUserAfterReload(user);
 
+    const handleLogout = async () => {
+        try {
+            await axios.post("http://localhost:3001/api/auth/logout", {}, { withCredentials: true }); // Ensure cookies are included
+            dispatch(logout()); // Clear user state in Redux
+            console.log("User logged out successfully");
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
+    
     return (
         <div className="z-20 bg-white flex justify-center md:border-r border-t md:border-t-0 border-gray
          py-7 lgg:px-4 min-w-full md:min-w-[60px] lgg:min-w-[244px]"
@@ -29,19 +42,12 @@ export const Navigation = () => {
                  md:justify-start md:fixed top-7 md:flex-col items-center gap-4 min-w-[60px]">
 
                 <Link to='/' className="hidden md:flex">
-                    <img src={logo}
-                         alt="logo"
-                         className="hidden lgg:block"/>
-                    <img src={ich}
-                         alt="logo small"
-                         className="block lgg:hidden"/>
+                    <img src={logo} alt="logo" className="hidden lgg:block"/>
+                    <img src={ich} alt="logo small" className="block lgg:hidden"/>
                 </Link>
                 <div className="flex md:flex-col items-center justify-around
                 lgg:md:items-start lgg:px-2 gap-4 md:mt-6 min-w-full">
-                    <Link
-                        to={links[0].href}
-                        className="mx-auto lgg:mx-0"
-                    >
+                    <Link to={links[0].href} className="mx-auto lgg:mx-0">
                         <div className="flex gap-4"
                              onMouseOver={() => setHoveredLink(links[0].name)}
                              onMouseLeave={() => setHoveredLink(null)}>
@@ -66,10 +72,7 @@ export const Navigation = () => {
                             <SearchModal isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen}/>
                         </div>
                     </div>
-                    <Link
-                        to={links[2].href}
-                        className="mx-auto lgg:mx-0"
-                    >
+                    <Link to={links[2].href} className="mx-auto lgg:mx-0">
                         <div className="flex gap-4 cursor-pointer"
                              onMouseOver={() => setHoveredLink(links[2].name)}
                              onMouseLeave={() => setHoveredLink(null)}>
@@ -127,10 +130,7 @@ export const Navigation = () => {
                             />
                         </div>
                     </div>
-                    <Link
-                        to={`profile/${user?.username}`}
-                        className="mx-auto lgg:mx-0"
-                    >
+                    <Link to={`profile/${user?.username}`} className="mx-auto lgg:mx-0">
                         <div className="flex items-center gap-4 md:mt-12">
                             <img
                                 src={user?.profile_image || default_profile_pic}
@@ -140,8 +140,14 @@ export const Navigation = () => {
                             <span className="font-semibold hidden lgg:block">Profile</span>
                         </div>
                     </Link>
+                    <button
+                        onClick={handleLogout}
+                        className="mx-auto lgg:mx-0 mt-4 bg-red-500 text-black px-4 py-2 rounded-md"
+                    >
+                        Logout
+                    </button>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

@@ -90,3 +90,21 @@ export const resetPassword = createAsyncThunk(
         }
     }
 );
+
+export const logoutUser = createAsyncThunk(
+    'auth/logout',
+    async (_, { rejectWithValue }) => {
+        try {
+            await axiosInstance.post(`/auth/logout`);
+            document.cookie = ''; // Clear all cookies
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                if (error.response && error.response.data.message) {
+                    return rejectWithValue(error.response.data.message);
+                } else {
+                    return rejectWithValue(error.message);
+                }
+            }
+        }
+    }
+);

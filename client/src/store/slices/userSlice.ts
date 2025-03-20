@@ -37,6 +37,9 @@ const userSlice = createSlice({
         },
         addSearchResult: (state, action: PayloadAction<CondensedUser>) => {
             state.search_results.push(action.payload);
+        },
+        logout: (state) => {
+            Object.assign(state, initialState); // Reset state to initial values
         }
     },
     extraReducers: builder => {
@@ -79,5 +82,5 @@ const userSlice = createSlice({
     }
 });
 
-export const {addPost, addFollowing, removeFollowing, addSearchResult} = userSlice.actions;
+export const {addPost, addFollowing, removeFollowing, addSearchResult, logout} = userSlice.actions;
 export default userSlice.reducer;

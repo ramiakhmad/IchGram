@@ -162,14 +162,12 @@ export const checkAccessToken = (req: Request, res: Response, next: NextFunction
 
 export const logoutUser = (req: Request, res: Response): void => {
   try {
-    // Clear the authentication cookie
     res.clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
     });
-
     res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {
     console.error("Error during logout:", error);
