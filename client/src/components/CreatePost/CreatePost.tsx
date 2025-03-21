@@ -35,6 +35,7 @@ export const CreatePost = ({ userId, username, profileImage, setIsCreatePostOpen
     const closeCreatePost = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         setIsCreatePostOpen(false);
+        setShowEmojiPicker(false); // Close emoji picker
         resetForm();
     };
 
@@ -42,7 +43,7 @@ export const CreatePost = ({ userId, username, profileImage, setIsCreatePostOpen
         <div
             className="absolute z-20 left-0 -top-0 md:-top-7 h-[calc(100vh-81px)] md:h-screen w-screen md:w-[calc(100vw-58px)] lgg:w-[calc(100vw-244px)] md:left-[60px] lgg:left-[220px]"
             style={{ backgroundColor: "rgba(0, 0, 0, 0.65)" }}
-            onClick={closeCreatePost}
+            onClick={closeCreatePost} // Close modal and emoji picker
         >
             <div
                 className="bg-white opacity-100 mt-8 md:mt-20 mx-auto rounded-xl xl:w-[913px] lg:w-[800px] md:w-[510px] w-[90vw]"
